@@ -159,8 +159,8 @@ module.exports.getEmployeeList = async (request, response) => {
     const stautsObj = {
       SELECTED: request.body.status_selected,
       PENDING: request.body.status_pending,
-      REJECTED: request.body.status_pending,
-      PROCESSING: request.body.status_pending,
+      REJECTED: request.body.status_rejected,
+      PROCESSING: request.body.status_processing,
       INTRIAL: request.body.status_in_trial,
     };
     let statusValue = Object.values(stautsObj);
@@ -210,21 +210,6 @@ module.exports.getEmployeeList = async (request, response) => {
       const employeeData = await employModel.find({
         status: { $in: checkStatusValue },
       });
-      if (employeeData && employeeData.length) {
-        response.send({
-          message: "Successfull Response",
-          statusCode: response.statusCode,
-          data: employeeData,
-        });
-      } else {
-        response.send({
-          message: "Record Not Found",
-          statusCode: response.statusCode,
-          data: [],
-        });
-      }
-    } else if (startDate && endDate) {
-      const employeeData = await employModel.find(employeeList);
       if (employeeData && employeeData.length) {
         response.send({
           message: "Successfull Response",
