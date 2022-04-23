@@ -1,7 +1,5 @@
 const employModel = require("../../models/employ-model"); //Import the employ model
 const fs = require("fs");
-// const path = require("path");
-// const moment = require("moment");
 
 //GET method route
 module.exports.getEmployeeData = async (request, response) => {
