@@ -194,8 +194,10 @@ module.exports.getEmployeeList = async (request, response) => {
           data: employeeData,
         });
       } else {
-        response.status(404).send({
-          message: "Data Not Found",
+        response.send({
+          message: "Record Not Found",
+          statusCode: response.statusCode,
+          data: [],
         });
       }
     } else if (
@@ -215,8 +217,10 @@ module.exports.getEmployeeList = async (request, response) => {
           data: employeeData,
         });
       } else {
-        response.status(404).send({
-          message: "Data Not Found",
+        response.send({
+          message: "Record Not Found",
+          statusCode: response.statusCode,
+          data: [],
         });
       }
     } else if (startDate && endDate) {
@@ -228,13 +232,17 @@ module.exports.getEmployeeList = async (request, response) => {
           data: employeeData,
         });
       } else {
-        response.status(404).send({
-          message: "Data Not Found",
+        response.send({
+          message: "Record Not Found",
+          statusCode: response.statusCode,
+          data: [],
         });
       }
     } else {
-      response.status(404).send({
-        message: "Data Not Found",
+      response.send({
+        message: "Record Not Found",
+        statusCode: response.statusCode,
+        data: [],
       });
     }
   } catch (error) {
