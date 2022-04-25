@@ -62,15 +62,12 @@ const employSchema = new mongoose.Schema({
   },
   profile_photo: {
     type: String,
-    // required: true,
   },
   aadharCard_photo: {
     type: String,
-    // required: true,
   },
   panCard_photo: {
     type: String,
-    // required: true,
   },
 });
 

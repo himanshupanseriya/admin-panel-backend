@@ -35,71 +35,81 @@ module.exports.createEmployeeData = async (request, response) => {
     if (employeeList == null || !employeeList.employee_code) {
       let user = new employModel(request.body);
       user.employee_code = request.body.employee_code;
-      const profilePhotoData = request.files.profile_photo[0];
-      const profile_photo_path = `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`;
-      user.profile_photo = profile_photo_path;
-      await fs.promises
-        .mkdir(`data/${user.id}/ProfilePhoto/`, {
-          recursive: true,
-        })
-        .catch((error) => {
-          console.error("caught exception : ", error.message);
+      console.log(request.files);
+      if (request.files.profile_photo === null) {
+        const employeeData = await user.save();
+        response.send({
+          message: "Successfull Response",
+          statusCode: response.statusCode,
+          data: employeeData,
         });
-      {
-        await fs.writeFile(
-          `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`,
-          profilePhotoData.buffer,
-          function (err) {
-            if (err) throw err;
-          }
-        );
-      }
-      const aadharcardPhotoData = request.files.aadharCard_photo[0];
-      const aadharCard_photo_path = `data/${user.id}/Document/${aadharcardPhotoData.originalname}`;
-      user.aadharCard_photo = aadharCard_photo_path;
-      await fs.promises
-        .mkdir(`data/${user.id}/Document/`, {
-          recursive: true,
-        })
-        .catch((error) => {
-          console.error("caught exception : ", error.message);
-        });
-      {
-        await fs.writeFile(
-          `data/${user.id}/Document/${aadharcardPhotoData.originalname}`,
-          aadharcardPhotoData.buffer,
-          function (err) {
-            if (err) throw err;
-          }
-        );
-      }
+      } else {
+        const profilePhotoData = request.files.profile_photo[0];
+        const profile_photo_path = `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`;
+        user.profile_photo = profile_photo_path;
+        await fs.promises
+          .mkdir(`data/${user.id}/ProfilePhoto/`, {
+            recursive: true,
+          })
+          .catch((error) => {
+            console.error("caught exception : ", error.message);
+          });
+        {
+          await fs.writeFile(
+            `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`,
+            profilePhotoData.buffer,
+            function (err) {
+              if (err) throw err;
+            }
+          );
+        }
+        const aadharcardPhotoData = request.files.aadharCard_photo[0];
+        const aadharCard_photo_path = `data/${user.id}/Document/${aadharcardPhotoData.originalname}`;
+        user.aadharCard_photo = aadharCard_photo_path;
+        await fs.promises
+          .mkdir(`data/${user.id}/Document/`, {
+            recursive: true,
+          })
+          .catch((error) => {
+            console.error("caught exception : ", error.message);
+          });
+        {
+          await fs.writeFile(
+            `data/${user.id}/Document/${aadharcardPhotoData.originalname}`,
+            aadharcardPhotoData.buffer,
+            function (err) {
+              if (err) throw err;
+            }
+          );
+        }
 
-      const pancardPhotoData = request.files.panCard_photo[0];
-      const panCard_photo_path = `data/${user.id}/Document/${pancardPhotoData.originalname}`;
-      user.panCard_photo = panCard_photo_path;
-      await fs.promises
-        .mkdir(`data/${user.id}/Document/`, {
-          recursive: true,
-        })
-        .catch((error) => {
-          console.error("caught exception : ", error.message);
-        });
-      {
-        await fs.writeFile(
-          `data/${user.id}/Document/${pancardPhotoData.originalname}`,
-          pancardPhotoData.buffer,
-          function (err) {
-            if (err) throw err;
-          }
-        );
-      }
+        const pancardPhotoData = request.files.panCard_photo[0];
+        const panCard_photo_path = `data/${user.id}/Document/${pancardPhotoData.originalname}`;
+        user.panCard_photo = panCard_photo_path;
+        await fs.promises
+          .mkdir(`data/${user.id}/Document/`, {
+            recursive: true,
+          })
+          .catch((error) => {
+            console.error("caught exception : ", error.message);
+          });
+        {
+          await fs.writeFile(
+            `data/${user.id}/Document/${pancardPhotoData.originalname}`,
+            pancardPhotoData.buffer,
+            function (err) {
+              if (err) throw err;
+            }
+          );
+        }
 
-      const employeeData = await user.save();
-      response.send({
-        message: "Successfull Response",
-        statusCode: response.statusCode,
-        data: employeeData,
-      });
+        const employeeData = await user.save();
+        response.send({
+          message: "Successfull Response",
+          statusCode: response.statusCode,
+          data: employeeData,
+        });
+      }
     } else {
       response.status(400).send({
         message: "Please Enter Unique Employee Code",
