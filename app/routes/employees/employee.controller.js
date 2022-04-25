@@ -35,8 +35,7 @@ module.exports.createEmployeeData = async (request, response) => {
     if (employeeList == null || !employeeList.employee_code) {
       let user = new employModel(request.body);
       user.employee_code = request.body.employee_code;
-      console.log(request.files);
-      if (request.files.profile_photo === null) {
+      if (request.files.profile_photo == null) {
         const employeeData = await user.save();
         response.send({
           message: "Successfull Response",
