@@ -1,6 +1,7 @@
 const express = require("express"); // Initialize express
 const app = express();
 const bodyParser = require("body-parser");
+const path = require("path");
 
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/xwww-form-urlencoded
 app.use(bodyParser.json()); // parse application/json
@@ -17,6 +18,8 @@ app.use(cors());
 
 app.use(express.json()); // for parsing application/json
 app.use("/", employRoute);
+const staticPath = path.join(__dirname + "/public");
+app.use(express.static(staticPath)); // Static Middleware
 
 // Tell the app what port to listen on
 app.listen(port, () => {

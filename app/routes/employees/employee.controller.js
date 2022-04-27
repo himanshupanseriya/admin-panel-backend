@@ -1,6 +1,23 @@
 const employModel = require("../../models/employ-model"); //Import the employ model
 const fs = require("fs");
 
+//Get method route
+module.exports.getEmployeeRecord = async (request, response) => {
+  try {
+    const checkId = request.params.id ? { _id: request.params.id } : {};
+    const user = await employModel.find(checkId);
+    response.send({
+      message: "Successfull Response",
+      statusCode: response.statusCode,
+      data: user,
+    });
+  } catch (error) {
+    response.status(500).send({
+      data: error.message,
+    });
+  }
+};
+
 //Post method route
 module.exports.createEmployeeData = async (request, response) => {
   try {
@@ -23,7 +40,7 @@ module.exports.createEmployeeData = async (request, response) => {
           const profile_photo_path = `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`;
           user.profile_photo = profile_photo_path;
           await fs.promises
-            .mkdir(`data/${user.id}/ProfilePhoto/`, {
+            .mkdir(`public/data/${user.id}/ProfilePhoto/`, {
               recursive: true,
             })
             .catch((error) => {
@@ -31,7 +48,7 @@ module.exports.createEmployeeData = async (request, response) => {
             });
           {
             await fs.promises.writeFile(
-              `data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`,
+              `public/data/${user.id}/ProfilePhoto/${profilePhotoData.originalname}`,
               profilePhotoData.buffer,
               function (err) {
                 if (err) throw err;
@@ -44,7 +61,7 @@ module.exports.createEmployeeData = async (request, response) => {
           const aadharCard_photo_path = `data/${user.id}/Document/AadharCard/${aadharcardPhotoData.originalname}`;
           user.aadharCard_photo = aadharCard_photo_path;
           await fs.promises
-            .mkdir(`data/${user.id}/Document/AadharCard/`, {
+            .mkdir(`public/data/${user.id}/Document/AadharCard/`, {
               recursive: true,
             })
             .catch((error) => {
@@ -52,7 +69,7 @@ module.exports.createEmployeeData = async (request, response) => {
             });
           {
             await fs.promises.writeFile(
-              `data/${user.id}/Document/AadharCard/${aadharcardPhotoData.originalname}`,
+              `public/data/${user.id}/Document/AadharCard/${aadharcardPhotoData.originalname}`,
               aadharcardPhotoData.buffer,
               function (err) {
                 if (err) throw err;
@@ -65,7 +82,7 @@ module.exports.createEmployeeData = async (request, response) => {
           const panCard_photo_path = `data/${user.id}/Document/PanCard/${pancardPhotoData.originalname}`;
           user.panCard_photo = panCard_photo_path;
           await fs.promises
-            .mkdir(`data/${user.id}/Document/PanCard/`, {
+            .mkdir(`public/data/${user.id}/Document/PanCard/`, {
               recursive: true,
             })
             .catch((error) => {
@@ -73,7 +90,7 @@ module.exports.createEmployeeData = async (request, response) => {
             });
           {
             await fs.promises.writeFile(
-              `data/${user.id}/Document/PanCard/${pancardPhotoData.originalname}`,
+              `public/data/${user.id}/Document/PanCard/${pancardPhotoData.originalname}`,
               pancardPhotoData.buffer,
               function (err) {
                 if (err) throw err;
@@ -107,7 +124,7 @@ module.exports.createEmployeeData = async (request, response) => {
   }
 };
 
-// POST method using GET getEmployeeListData
+// POST method using GET Search Method Route
 module.exports.getEmployeeData = async (request, response) => {
   try {
     let startDate = new Date(request.body.from_date).getTime();
@@ -248,7 +265,7 @@ module.exports.updateEmployeeData = async (request, response) => {
     ) {
       if (request.files.profile_photo !== undefined) {
         await fs.promises
-          .rm(`data/${_id}/ProfilePhoto`, {
+          .rm(`public/data/${_id}/ProfilePhoto`, {
             recursive: true,
           })
           .catch((error) => {
@@ -257,7 +274,7 @@ module.exports.updateEmployeeData = async (request, response) => {
         const profilePhotoData = request.files.profile_photo[0];
         profile_photo_path = `data/${_id}/ProfilePhoto/${profilePhotoData.originalname}`;
         await fs.promises
-          .mkdir(`data/${_id}/ProfilePhoto/`, {
+          .mkdir(`public/data/${_id}/ProfilePhoto/`, {
             recursive: true,
           })
           .catch((error) => {
@@ -265,7 +282,7 @@ module.exports.updateEmployeeData = async (request, response) => {
           });
         {
           await fs.promises.writeFile(
-            `data/${_id}/ProfilePhoto/${profilePhotoData.originalname}`,
+            `public/data/${_id}/ProfilePhoto/${profilePhotoData.originalname}`,
             profilePhotoData.buffer,
             function (err) {
               if (err) throw err;
@@ -276,7 +293,7 @@ module.exports.updateEmployeeData = async (request, response) => {
 
       if (request.files.aadharCard_photo !== undefined) {
         await fs.promises
-          .rm(`data/${_id}/Document/AadharCard`, {
+          .rm(`public/data/${_id}/Document/AadharCard`, {
             recursive: true,
           })
           .catch((error) => {
@@ -285,7 +302,7 @@ module.exports.updateEmployeeData = async (request, response) => {
         const aadharcardPhotoData = request.files.aadharCard_photo[0];
         aadharCard_photo_path = `data/${_id}/Document/AadharCard/${aadharcardPhotoData.originalname}`;
         await fs.promises
-          .mkdir(`data/${_id}/Document/AadharCard/`, {
+          .mkdir(`public/data/${_id}/Document/AadharCard/`, {
             recursive: true,
           })
           .catch((error) => {
@@ -293,7 +310,7 @@ module.exports.updateEmployeeData = async (request, response) => {
           });
         {
           await fs.promises.writeFile(
-            `data/${_id}/Document/AadharCard/${aadharcardPhotoData.originalname}`,
+            `public/data/${_id}/Document/AadharCard/${aadharcardPhotoData.originalname}`,
             aadharcardPhotoData.buffer,
             function (err) {
               if (err) throw err;
@@ -304,7 +321,7 @@ module.exports.updateEmployeeData = async (request, response) => {
 
       if (request.files.panCard_photo !== undefined) {
         await fs.promises
-          .rm(`data/${_id}/Document/PanCard`, {
+          .rm(`public/data/${_id}/Document/PanCard`, {
             recursive: true,
           })
           .catch((error) => {
@@ -313,7 +330,7 @@ module.exports.updateEmployeeData = async (request, response) => {
         const pancardPhotoData = request.files.panCard_photo[0];
         panCard_photo_path = `data/${_id}/Document/PanCard/${pancardPhotoData.originalname}`;
         await fs.promises
-          .mkdir(`data/${_id}/Document/PanCard/`, {
+          .mkdir(`public/data/${_id}/Document/PanCard/`, {
             recursive: true,
           })
           .catch((error) => {
@@ -321,7 +338,7 @@ module.exports.updateEmployeeData = async (request, response) => {
           });
         {
           await fs.promises.writeFile(
-            `data/${_id}/Document/PanCard/${pancardPhotoData.originalname}`,
+            `public/data/${_id}/Document/PanCard/${pancardPhotoData.originalname}`,
             pancardPhotoData.buffer,
             function (err) {
               if (err) throw err;
@@ -390,7 +407,7 @@ module.exports.deleteEmployeeData = async (request, response) => {
       });
     }
     await fs.promises
-      .rm(`data/${_id}`, {
+      .rm(`public/data/${_id}`, {
         recursive: true,
       })
       .catch((error) => {

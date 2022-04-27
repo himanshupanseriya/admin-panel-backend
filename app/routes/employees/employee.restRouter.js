@@ -7,11 +7,13 @@ const {
   createEmployeeData,
   updateEmployeeData,
   deleteEmployeeData,
+  getEmployeeRecord,
 } = require("./employee.controller"); //Import the employee controller
 
 const employeeRouter = express.Router();
 
 // all method routes
+employeeRouter.get("/all/:id?", getEmployeeRecord);
 employeeRouter.post(
   "/add",
   upload.fields([
