@@ -69,6 +69,10 @@ const employSchema = new mongoose.Schema({
   panCard_photo: {
     type: String,
   },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 // Compile model from employ schema

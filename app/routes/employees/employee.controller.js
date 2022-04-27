@@ -5,12 +5,20 @@ const fs = require("fs");
 module.exports.getEmployeeRecord = async (request, response) => {
   try {
     const checkId = request.params.id ? { _id: request.params.id } : {};
-    const user = await employModel.find(checkId);
-    response.send({
-      message: "Successfull Response",
-      statusCode: response.statusCode,
-      data: user,
-    });
+    const employeeList = await employModel.find(checkId);
+    if (employeeList && employeeList.length) {
+      response.send({
+        message: "Successfull Response",
+        statusCode: response.statusCode,
+        data: employeeList,
+      });
+    } else {
+      response.send({
+        message: "Record Not Found",
+        statusCode: response.statusCode,
+        data: [],
+      });
+    }
   } catch (error) {
     response.status(500).send({
       data: error.message,
